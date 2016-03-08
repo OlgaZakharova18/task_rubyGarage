@@ -45,7 +45,8 @@
 			
   
   
-  //Манипуляция с проэктами
+  //Работа с проектами
+  
   //редактирование
 	function editProjectName(bid,pname){
 		$("#addit_name"+bid).html('<div class="input-group "><input type="text" class="form-control addit_name_reg" placeholder="'+pname+'"><span class="input-group-btn" ><button class="btn btn-defauld addit_name_reg_button" onclick="inProjectAddTask('+bid+',1)" type="button">Save</button></span></div>');  
@@ -57,21 +58,20 @@
 		switch(type){
 			case 1:
 				var targetInput = document.getElementById("addit_name"+bid).getElementsByClassName("form-control")[0];
-				params = "id="+bid+"&type="+type+"&pcontrols=1"+"&newName='"+targetInput.value+"'"; 
-				
-								
+				params = "id="+bid+"&type="+type+"&pcontrols=1"+"&newName='"+targetInput.value+"'"; 									
 				break;	
+
+
 		//удаление
 			case 2: 
-				
-				params = "id="+bid+"&type="+type+"&pcontrols=2";
-					
+				params = "id="+bid+"&type="+type+"&pcontrols=2";					
 				break;
+				
+				
 		// добавление тасков
 			case 3: 
 				var targetInput = document.getElementById("inputAddTask"+bid);
 				params = "id="+bid+"&type="+type+"&pcontrols=3"+"&newName="+targetInput.value;
-				
 				break;
 		}		
 		$.ajax({
@@ -92,7 +92,7 @@
 	}
 	
 	
-	//Манипуляция с тасками
+	//Работа с тасками
 	//редактирование имени
 	function editTaskName(tid,tname, pr_id){
 		$("#addit_task_name"+tid+"_"+pr_id).html('<div class="input-group"><input type="text" class="form-control addit_name_task" id="inputTaskName'+tid+'_'+pr_id+'" placeholder="'+tname+'"><span class="input-group-btn" ><button class="btn btn-defauld addit_name_task_button" onclick="inTaskAddTask('+pr_id+','+tid+',1)" type="button">Save</button></span></div>');  
@@ -102,8 +102,9 @@
 		 
 		var params;
 		switch(type){
+			
 					//имя таска
-					case 1:
+				case 1:
 					var targetInput = document.getElementById("inputTaskName"+tid+"_"+project);			
 						$.ajax({							
 							type: "POST",
@@ -119,8 +120,9 @@
 							}
 						})			
 					break;	
+					
 					//удаление
-					case 2: 
+				case 2: 
 						$.ajax({
 							type: "POST",
 							url: "http://task/",
@@ -135,8 +137,9 @@
 							}
 						})								
 					break;
+					
 					//вверх
-					case 3:
+				case 3:
 					$.ajax({
 							type: "POST",
 							url: "http://task/",
@@ -151,8 +154,9 @@
 							}
 						})									
 					break;	
+					
 					//вниз					
-					case 4:
+				case 4:
 					$.ajax({
 							type: "POST",
 							url: "http://task/",
@@ -165,10 +169,10 @@
 								alert('Ошибка при отправке!');
 								repeat();
 							}
-						})				
-					
+						})		
 					break;	
-					case 5:
+					//checkbox 
+				case 5:
 					$.ajax({
 							type: "POST",
 							url: "http://task/",

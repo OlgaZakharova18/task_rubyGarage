@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Мар 08 2016 г., 10:58
+-- Время создания: Мар 09 2016 г., 01:00
 -- Версия сервера: 5.5.25
 -- Версия PHP: 5.2.12
 
@@ -36,15 +36,15 @@ CREATE TABLE IF NOT EXISTS `project` (
   KEY `fk_project_user` (`id_user`),
   KEY `fk_project_sate1` (`id_state`),
   KEY `fk_project_priority1` (`priority`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='таблица проэктов' AUTO_INCREMENT=47 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='таблица проэктов' AUTO_INCREMENT=55 ;
 
 --
 -- Дамп данных таблицы `project`
 --
 
 INSERT INTO `project` (`id_project`, `name_project`, `id_user`, `id_state`, `priority`) VALUES
-(44, '''New Task''', 8, 0, 3),
-(46, '''Second''', 8, 0, 3);
+(50, '''hgkj''', 8, 0, 1),
+(54, '', 9, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -75,22 +75,15 @@ CREATE TABLE IF NOT EXISTS `task` (
   KEY `fk_task_project1` (`id_project`),
   KEY `fk_task_user1` (`id_user`),
   KEY `fk_task_sate1` (`id_state`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Дамп данных таблицы `task`
 --
 
 INSERT INTO `task` (`id_task`, `name_task`, `id_project`, `id_user`, `id_state`, `priority`) VALUES
-(1, '', 44, 8, 0, 3),
-(2, '', 44, 8, 0, 3),
-(3, '', 44, 8, 0, 3),
-(4, '', 46, 8, 0, 3),
-(5, '', 46, 8, 0, 3),
-(6, '', 44, 8, 0, 3),
-(7, '', 44, 8, 0, 3),
-(8, '', 44, 8, 0, 3),
-(9, '', 44, 8, 0, 3);
+(14, '''3''', 50, 8, 1, 2),
+(17, 'fghg', 50, 8, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -104,14 +97,16 @@ CREATE TABLE IF NOT EXISTS `user` (
   `login_user` varchar(45) NOT NULL,
   `password_user` varchar(45) NOT NULL,
   PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='таблица, для хранения данных о пользователях' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='таблица, для хранения данных о пользователях' AUTO_INCREMENT=12 ;
 
 --
 -- Дамп данных таблицы `user`
 --
 
 INSERT INTO `user` (`id_user`, `name_user`, `login_user`, `password_user`) VALUES
-(8, 'Max', 'Max', 'e10adc3949ba59abbe56e057f20f883e');
+(9, 'Olga', 'Olga', 'e10adc3949ba59abbe56e057f20f883e'),
+(10, 'Vasya', 'Vasya', 'e10adc3949ba59abbe56e057f20f883e'),
+(11, 'Max', 'Max', 'e10adc3949ba59abbe56e057f20f883e');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

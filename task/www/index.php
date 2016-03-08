@@ -1,7 +1,7 @@
 <?php 
 
 session_start(); // добавление сессии
-//$_SESSION['name']= $e_log;
+
 
 header("Content-Type: text/html; charset=utf-8");
 
@@ -10,18 +10,12 @@ header("Content-Type: text/html; charset=utf-8");
 		$connect = mysql_connect('localhost','root','') or die(mysql_error());
 		mysql_select_db('db_ruby', $connect);
 
-		//if(!isset($_GET['top'])){
-			
-			
-		//}
-
+		
 		//регистрация
-
-		if(isset($_POST['submit'])){											//isset - определяет, установлена ли переменная.
+		if(isset($_POST['submit'])){											
 			$username = $_POST['username'];
 			$login = $_POST['login'];
 			$password = $_POST['password'];
-	
 			$query = mysql_query("INSERT INTO user VALUES('','$username','$login', md5('$password'))") or die(mysql_error());
 		}
 
@@ -60,7 +54,6 @@ header("Content-Type: text/html; charset=utf-8");
 					$user_data = mysql_fetch_array($query);	
 					if($user_data[0]){						
 						$count = $user_data['count'];
-					
 						$query = mysql_query("INSERT INTO task VALUES('', '$newName', $project_id, $user ,0, $count)") or die(mysql_error());
 						if (!$query) {
 							exit;
@@ -151,13 +144,10 @@ header("Content-Type: text/html; charset=utf-8");
 		
 			
 			if(isset($_POST['add_project'])){
-					
 					if(!isset($_SESSION['user_id'])){
-						
 						exit;
 					}
 					$user = $_SESSION['user_id'];
-					
 					$query = mysql_query("SELECT COUNT( * ) +1 AS  'count' FROM project WHERE id_user = $user") or die(mysql_error());
 					if (!$query) {
 						exit;
@@ -200,34 +190,28 @@ header("Content-Type: text/html; charset=utf-8");
 				$user_id = $user_data['id_user'];
 				$_SESSION['user_id']= $user_id;	
 				$_SESSION['check']= $check;	
-	//			
 				render_project();
-	//		
 			}
 			else{
 				echo "Wrong password or login";
 			}
 		}
 
-				//Разлогинивание, выход из сессии
-
+		
+		
+		//Разлогинивание, выход из сессии
 		if(isset($_POST['logout'])){
 			unset($_SESSION['name']);
 			session_destroy();
-			//	session_unregister('name');
 		}
 
 
 
 
 
-				// добавление формы
+		// добавление формы
 
-								
-				
-				
-				
-				function render_project() {
+		function render_project() {
 					$user = $_SESSION['user_id'];
 					
 					$query = mysql_query("SELECT id_project, name_project, id_state, priority FROM  `project` WHERE id_user =$user ORDER BY priority");
@@ -250,12 +234,9 @@ header("Content-Type: text/html; charset=utf-8");
 											<div class="col-lg-3 col-md-4 col-sm-5 col-xs-12 ">
 												<button type="button" class="btn btn-link" onclick="editProjectName('.$project_data[0].','.$param2.')"><span class="glyphicon glyphicon glyphicon-pencil btn-lg"></span></button>
 												<button type="button" id="del_div" class="btn btn-link" onclick="inProjectAddTask('.$project_data[0].',2)"><span class="glyphicon glyphicon glyphicon-trash btn-lg"></span></button>
-											</div>
-									
-									
+											</div>				
 										</div>
-									</div>
-							
+									</div>							
 							
 									<!-- Часть для добавления задач -->
 									<div class="task_main">
@@ -269,17 +250,15 @@ header("Content-Type: text/html; charset=utf-8");
 															</span>																																
 													</div>																		
 												</div>
-											</div>
-							
+											</div>							
 										</div>										
 									</div>';
 									render_tasks($project_data[0]);
-								echo '</div>';
-								
+								echo '</div>';								
 					}		
 					
 				echo '</div>';
-				}		
+		}		
 				
 				
 			 // работа с тасками
@@ -300,7 +279,7 @@ header("Content-Type: text/html; charset=utf-8");
 										<div class="checkbox">
 											<div class="col-lg-2 col-lg-offset-5 col-md-2 col-md-offset-2 col-sm-2 col-sm-offset-2  col-xs-2 col-xs-offset-2 col-xs-pull-4 checkbox_border">
 												<label>
-												<input type="checkbox" '.$checked.' onclick="inTaskAddTask('.$project_id.','.$project_task[0].',5)"> 
+												<input type="checkbox" '.$checked.' onclick="inTaskAddTask('.$project_id.','.$project_task[0].',5) checked"> 
 												</label>
 											</div>
 										</div>
@@ -321,22 +300,12 @@ header("Content-Type: text/html; charset=utf-8");
 					echo '<div class="task-first">
 							<div class="row">
 								<div class="col-lg-1  col-md-1  col-sm-1  col-xs-2  task-first-check">
-										
-								</div>
-								
+								</div>								
 							</div>
 						</div>';
 						
-				}
-						
-						
-				/* Место для вставки блока*/
-											
-							
-																
-				    //include ($_SERVER["DOCUMENT_ROOT"]."/block_file.html"); 
-												
-			
+				}				
+	
 					if($check == true){
 						echo '
 							
@@ -347,9 +316,7 @@ header("Content-Type: text/html; charset=utf-8");
 									</button>
 								</div>    
 							</div> ';
-						}		
-						
+						}							
 							
 					include ($_SERVER["DOCUMENT_ROOT"]."/footer_index.html"); 		
-				
 ?>	
