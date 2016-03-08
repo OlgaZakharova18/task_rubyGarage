@@ -1,0 +1,157 @@
+	*{
+		margin: 0px;
+		padding: 0 px; 
+	}
+	body{
+		background: linear-gradient(to top, #c1680d 20%, #d4b651, #d6d3bb 60%)no-repeat center center fixed;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+	.wrap{
+		background: linear-gradient(to top, #c1680d 20%, #d4b651, #d6d3bb 60%);
+		background-attachment: fixed;
+		height:100%;
+		
+	}
+
+
+	.main{
+		margin: 120px auto;
+		
+		
+	}
+
+	.header_main{
+		background-color: #487eb4;
+		margin-top: 30px;
+	}
+
+
+
+	.header_main p{
+		margin-top: 10px;
+		color:white;
+	}  
+
+	.task_main{
+		padding-top: 5px;
+		padding-bottom: 5px;
+		background-color: #dcdcdc;
+		
+	}
+
+	.task_main button{
+		background-color: #78af91;
+		color: white;
+		
+	}
+	.task-next{
+		padding-top: 12px;
+		background-color: #ffffff;
+		border: 1px solid #dcdcdc;
+		border-bottom: none;
+		cursor: pointer;
+	}
+
+
+
+	.checkbox{
+		margin: auto;
+	}
+
+	.task-next-right{
+		border-left: 1px solid #dcdcdc;
+	}
+
+
+
+
+
+	.task-first{
+		padding-top: 12px;
+		background-color: #ffffff;
+		border-radius: 0 0 20px 20px ;
+		
+	}
+
+
+
+	.checkbox{
+		margin: auto;
+	}
+
+	.task-first-right{
+		border-left: 1px solid #dcdcdc;
+	}
+
+	.botton{
+		margin-top: 50px;
+		margin-bottom: 50px;
+		
+	}
+
+	.reg{
+		margin-top: 10px;
+		margin-right: 100px;
+		margin-bottom: 30px;
+		
+	}
+
+
+
+
+	.regs{
+		border-left: 1px solid #dcdcdc;
+	}
+
+
+	.button_ok{
+		margin-top: 60px;
+	}
+
+	#myModal .modal-header{
+		background-color: #d6d3bb;
+	}
+
+	#myModal .modal-body{
+		background: linear-gradient(to top, #c1680d 20%, #d4b651, #d6d3bb 60%);
+	}
+
+	#myModal .modal-footer{
+		background-color: #c1680d;
+	}
+
+
+	.header_main .addit_name{
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+	
+	#output{
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 15px;
+	height: 500px; 
+	width: 100%;
+	}
+	
+	
+	
+	.addit_name_reg{
+		margin-top: 10px;
+		
+	}
+	.addit_name_reg_button{
+		margin-top: 10px;
+		margin-right: 10px;
+	}
+	
+	
+	.checkbox_border{
+		border-right: 1px solid #dcdcdc;
+		padding-left: 20px;
+		padding-right: 40px;
+	}

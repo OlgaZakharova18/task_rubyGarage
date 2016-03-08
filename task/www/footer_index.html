@@ -1,0 +1,85 @@
+﻿						</div>
+					</div>		
+				</div>
+			</div>
+		</div>
+
+
+
+		<!-- Модальное окно -->
+
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+							<span class="glyphicon glyphicon glyphicon-remove"></span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Login | Registration</h4>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+					
+					<?php
+						
+						echo'<div class="col-lg-5  col-md-5  col-sm-5  col-xs-10 log">
+									<h3 class="text-center">Login</h3>
+									<form class="form-horizontal" method="post" action="index.php">
+										<div class="form-group">
+												<div class="col-md-offset-1 col-md-10">
+													<input type="text" name="e_log" class="form-control" id="e-mail" placeholder="Login" required>
+												</div>
+										</div>
+										<div class="form-group">
+												<div class=" col-md-offset-1 col-md-10">
+													<input type="password" name="e_password" class="form-control" id="ask" placeholder="Password" required>
+												</div>
+										</div>
+													
+										<div class="form-group button_ok">
+											<div class="col-md-offset-1 col-md-1 col-sm-1">
+												<button type="enter"  name="enter" class="btn btn-primary" onclick="enter" data-toggle="modal" data-target="#modal-1" >Ok</button>
+											</div>        
+										</div>
+									</form>
+								</div>
+								<div class="col-lg-5 col-lg-offset-1 col-md-5 col-md-offset-1 col-sm-5 col-sm-offset-1 col-xs-10 col-lg-xs-1 regs">
+									<h3 class="text-center">Registration</h3>
+									<form class="form-horizontal" method="post" action="index.php">
+										<div class="form-group">
+												<div class="col-md-offset-1 col-md-10">
+													<input type="text" name="username" class="form-control" id="username" placeholder="Name" required />
+												</div>
+										</div>
+										<div class="form-group">
+											<div class="col-md-offset-1 col-md-10">
+												<input type="login" name="login" class="form-control" id="login" placeholder="Login" required />
+											</div>
+										</div>
+										<div class="form-group">
+											<div class=" col-md-offset-1 col-md-10">
+												<input type="password" name="password" class="form-control" id="password" placeholder="Password" required />
+											</div>
+										</div>
+												
+										<div class="form-group">
+											<div class="col-md-offset-1 col-md-1 col-sm-1">
+												<button type="exit" name="submit" class="btn btn-primary" onclick="exit" data-toggle="modal" data-target="#modal-1">Ok</button>
+											</div>        
+										</div>
+									</form>
+								</div>
+						</div>
+					</div>
+				</div>
+						';
+										
+								
+							
+						?>	
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/javascript.js"></script>
+		</body>
+		</html>
