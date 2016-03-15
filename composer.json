@@ -2,6 +2,6 @@
 	"require":{
 	},
   "require-dev": {
-    "heroku/php": "*"
+     "heroku/heroku-buildpack-php": "*"
   }
 }
