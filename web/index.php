@@ -154,16 +154,16 @@ header("Content-Type: text/html; charset=utf-8");
 						exit;
 					}
 					$user = $_SESSION['user_id'];
-					$query = pg_query($connect,"SELECT COUNT( * ) +1 AS  \"count\" FROM public.project WHERE id_user = $user") or die("Could not connect");
+					$query = pg_query($connect,"SELECT COUNT( * ) +1 AS  \"count\" FROM public.project WHERE id_user = $user") or die(pg_last_error($connect));
 					if (!$query) {
 						exit;
 					}
 					$user_data = pg_fetch_array($query);	
 					if($user_data[0]){						
 						$count = $user_data['count'];
-						$query = pg_query($connect,"INSERT INTO public.project (name_project, id_user , id_state, priority) VALUES('', $user ,0, $count)") or die("Could not connect");
+						$query = pg_query($connect,"INSERT INTO public.project (name_project, id_user , id_state, priority) VALUES('', $user ,0, $count)") or die(pg_last_error($connect));
 						if (!$query) {						
-							echo "Could not connect";						
+							echo pg_last_error($connect);						
 							exit;					
 						}
 						else{
