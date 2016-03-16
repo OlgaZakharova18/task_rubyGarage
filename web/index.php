@@ -5,10 +5,12 @@ session_start(); // добавление сессии
 
 header("Content-Type: text/html; charset=utf-8");
 
-			
+		//print_r($_POST);
 		//подключение к бд
-		$connect = mysql_connect('localhost','root','') or die(mysql_error());
-		mysql_select_db('db_ruby', $connect);
+		$dbopts = parse_url(getenv('DATABASE_URL'));
+		//$conn_string = "host=localhost port=5432 dbname=db_task user=postgres password=rhbcnfk121822";
+		$connect = pg_connect($dbopts) or die("Could not connect");
+		//pg_select('db_task', $connect);
 
 		
 		//регистрация
@@ -16,7 +18,8 @@ header("Content-Type: text/html; charset=utf-8");
 			$username = $_POST['username'];
 			$login = $_POST['login'];
 			$password = $_POST['password'];
-			$query = mysql_query("INSERT INTO user VALUES('','$username','$login', md5('$password'))") or die(mysql_error());
+			$query = pg_query($connect,"INSERT INTO public.user (name_user, login_user, password_user)VALUES ('$username', '$username', md5('$password'));");
+		
 		}
 
 
@@ -28,18 +31,18 @@ header("Content-Type: text/html; charset=utf-8");
 			case 1: 
 					$user = $_SESSION['user_id'];
 					$newName=$_POST['newName'];
-					if(!mysql_query("UPDATE project SET name_project = '$newName' WHERE id_project = $project_id AND id_user = $user")){
+					if(!pg_query($connect,"UPDATE public.project SET name_project = $newName WHERE id_project = $project_id AND id_user = $user")){
 						exit;
 					}						
 				break;
 		
 			case 2: 
 					$user = $_SESSION['user_id'];
-					$query = mysql_query("DELETE FROM task WHERE id_project = $project_id AND id_user=$user") or die(mysql_error());
+					$query = pg_query($connect,"DELETE FROM public.task WHERE id_project = $project_id AND id_user=$user") or die("Could not connect");
 					if (!$query) {
 						exit;
 					}
-					$query = mysql_query("DELETE FROM project WHERE id_project = $project_id AND id_user=$user") or die(mysql_error());
+					$query = pg_query($connect,"DELETE FROM public.project WHERE id_project = $project_id AND id_user=$user") or die("Could not connect");
 					if (!$query) {						
 						exit;
 					}
@@ -47,21 +50,21 @@ header("Content-Type: text/html; charset=utf-8");
 			case 3: 
 					$user = $_SESSION['user_id'];
 					$newName=$_POST['newName'];
-					$query = mysql_query("SELECT COUNT( * ) +1 AS  'count' FROM task WHERE id_user = $user AND id_project = $project_id") or die(mysql_error());
+					$query = pg_query($connect,"SELECT COUNT( * ) +1 AS  \"count\" FROM public.task WHERE id_user = $user AND id_project = $project_id") or die("Could not connect");
 					if (!$query) {
 						exit;
 					}
-					$user_data = mysql_fetch_array($query);	
+					$user_data = pg_fetch_array($query);	
 					if($user_data[0]){						
 						$count = $user_data['count'];
-						$query = mysql_query("INSERT INTO task VALUES('', '$newName', $project_id, $user ,0, $count)") or die(mysql_error());
+						$query = pg_query($connect,"INSERT INTO public.task (name_task,  id_project, id_user, id_state, priority) VALUES( '$newName', $project_id, $user ,0, $count)") or die("Could not connect");
 						if (!$query) {
 							exit;
 						}
 					}
 				break;
 			}
-			render_project();
+			render_project($connect);
 			exit;
 		}
 		
@@ -79,15 +82,15 @@ header("Content-Type: text/html; charset=utf-8");
 			switch($work){				
 			case 1: 
 					$user = $_SESSION['user_id'];
-					$newName=$_POST['newTaskName'];
-					if(!mysql_query("UPDATE task SET name_task = '$newName' WHERE id_task = $task_id AND id_user = $user AND id_project=$project")){
+					$newName=$_POST['newTaskName']; 
+					if(!pg_query($connect,"UPDATE public.task SET name_task = $newName WHERE id_task = $task_id AND id_user = $user AND id_project=$project")){
 						exit;
 					}						
 				break;
 		
 			case 2: 
 					$user = $_SESSION['user_id'];
-					$query = mysql_query("DELETE FROM task WHERE id_project = $project AND id_user=$user AND id_task=$task_id") or die(mysql_error());
+					$query = pg_query($connect,"DELETE FROM public.task WHERE id_project = $project AND id_user=$user AND id_task=$task_id") or die("Could not connect");
 					if (!$query) {
 						
 						exit;
@@ -96,44 +99,45 @@ header("Content-Type: text/html; charset=utf-8");
 			case 3: 
 					$user = $_SESSION['user_id'];
 					$newName=$_POST['newName'];
-					$query = mysql_query("SELECT priority FROM task WHERE id_project = $project AND id_user=$user AND id_task = $task_id")or die(mysql_error());
-					$data = mysql_fetch_array($query);						
+					$query = pg_query($connect,"SELECT priority FROM public.task WHERE id_project = $project AND id_user=$user AND id_task = $task_id")or die("Could not connect");
+					$data = pg_fetch_array($query);						
 					$cur_priority = $data[0];
-					$query = mysql_query("SELECT MAX(priority) AS  'prior' FROM task WHERE id_project = $project AND id_user=$user AND priority < $cur_priority")or die(mysql_error());
-					$data = mysql_fetch_array($query);
+					$query = pg_query($connect,"SELECT MAX(priority) AS  \"prior\" FROM public.task WHERE id_project = $project AND id_user=$user AND priority < $cur_priority")or die("Could not connect");
+					$data = pg_fetch_array($query);
 					$prev_prior = $data[0];
 					if(strlen($prev_prior) == 0)
 					{
 						break;						
 						}
-					mysql_query("UPDATE task SET priority = -1 where id_project = $project AND id_user=$user AND priority = $prev_prior")or die(mysql_error());
-					mysql_query("UPDATE task Set priority = $prev_prior where id_project = $project AND id_user=$user AND priority = $cur_priority")or die(mysql_error());
-					mysql_query("UPDATE task Set priority = $cur_priority where id_project = $project AND id_user=$user AND priority = -1")or die(mysql_error());
+					pg_query($connect,"UPDATE public.task SET priority = -1 where id_project = $project AND id_user=$user AND priority = $prev_prior")or die("Could not connect");
+					pg_query($connect,"UPDATE public.task Set priority = $prev_prior where id_project = $project AND id_user=$user AND priority = $cur_priority")or die("Could not connect");
+					pg_query($connect,"UPDATE public.task Set priority = $cur_priority where id_project = $project AND id_user=$user AND priority = -1")or die("Could not connect");
 				break;
 			case 4: 
 					$user = $_SESSION['user_id'];
 					$newName=$_POST['newName'];
-					$query = mysql_query("SELECT priority FROM task WHERE id_project = $project AND id_user=$user AND id_task = $task_id")or die(mysql_error());
-					$data = mysql_fetch_array($query);						
+					$query = pg_query($connect,"SELECT priority FROM public.task WHERE id_project = $project AND id_user=$user AND id_task = $task_id")or die("Could not connect");
+					$data = pg_fetch_array($query);						
 					$cur_priority = $data[0];
-					$query = mysql_query("SELECT MIN(priority) AS  'prior' FROM task WHERE id_project = $project AND id_user=$user AND priority > $cur_priority")or die(mysql_error());
-					$data = mysql_fetch_array($query);
+					$query = pg_query($connect,"SELECT MIN(priority) AS  \"prior\" FROM public.task WHERE id_project = $project AND id_user=$user AND priority > $cur_priority")or die("Could not connect");
+					$data = pg_fetch_array($query);
 					$prev_prior = $data[0];
 					if(strlen($prev_prior) == 0)
 					{
 						break;						
 						}
-					mysql_query("UPDATE task SET priority = -1 where id_project = $project AND id_user=$user AND priority = $prev_prior")or die(mysql_error());
-				    mysql_query("UPDATE task SET priority = $prev_prior where id_project = $project AND id_user=$user AND priority = $cur_priority")or die(mysql_error());
-					mysql_query("UPDATE task SET priority = $cur_priority where id_project = $project AND id_user=$user AND priority = -1")or die(mysql_error());
+					pg_query($connect,"UPDATE public.task SET priority = -1 where id_project = $project AND id_user=$user AND priority = $prev_prior")or die("Could not connect");
+				    pg_query($connect,"UPDATE public.task SET priority = $prev_prior where id_project = $project AND id_user=$user AND priority = $cur_priority")or die("Could not connect");
+					pg_query($connect,"UPDATE public.task SET priority = $cur_priority where id_project = $project AND id_user=$user AND priority = -1")or die("Could not connect");
 				break;
 			case 5: 
-			$user = $_SESSION['user_id'];
-			 mysql_query("UPDATE task SET id_state = CASE WHEN id_state = 0 THEN 1 ELSE 0 END WHERE id_project=$project AND id_user=$user AND id_task=$task_id")or die(mysql_error());
-			
-			break;
+					$user = $_SESSION['user_id'];
+					echo 'before check';
+					pg_query($connect,"UPDATE public.task SET id_state = CASE WHEN id_state = 0 THEN 1 ELSE 0 END WHERE id_project=$project AND id_user=$user AND id_task=$task_id;")or die("Could not connect");
+					
+				break;
 			}
-			render_project();
+			render_project($connect);
 			exit;
 		}
 		
@@ -148,21 +152,21 @@ header("Content-Type: text/html; charset=utf-8");
 						exit;
 					}
 					$user = $_SESSION['user_id'];
-					$query = mysql_query("SELECT COUNT( * ) +1 AS  'count' FROM project WHERE id_user = $user") or die(mysql_error());
+					$query = pg_query($connect,"SELECT COUNT( * ) +1 AS  \"count\" FROM public.project WHERE id_user = $user") or die("Could not connect");
 					if (!$query) {
 						exit;
 					}
-					$user_data = mysql_fetch_array($query);	
+					$user_data = pg_fetch_array($query);	
 					if($user_data[0]){						
 						$count = $user_data['count'];
-						$query = mysql_query("INSERT INTO project VALUES('','', $user ,0, $count)") or die(mysql_error());
+						$query = pg_query($connect,"INSERT INTO public.project (name_project, id_user , id_state, priority) VALUES('', $user ,0, $count)") or die("Could not connect");
 						if (!$query) {						
-							echo mysql_error();						
+							echo "Could not connect";						
 							exit;					
 						}
 						else{
 							ob_end_clean();					
-							render_project();
+							render_project($connect);
 							exit;
 						}
 					}
@@ -180,17 +184,17 @@ header("Content-Type: text/html; charset=utf-8");
 		if(isset($_POST['enter'])){
 			$e_log = $_POST['e_log'];
 			$e_password = $_POST['e_password'];
-			$query = mysql_query("SELECT id_user FROM user WHERE login_user = '$e_log' AND password_user=md5('$e_password')");			
+			$query = pg_query($connect,"SELECT id_user FROM public.user WHERE login_user = '$e_log' AND password_user=md5('$e_password')");			
 			if (!$query) {
 				exit;
 			}
-			$user_data = mysql_fetch_array($query);	
+			$user_data = pg_fetch_array($query);	
 			if($user_data['id_user']){
 				$check = true;				
 				$user_id = $user_data['id_user'];
 				$_SESSION['user_id']= $user_id;	
 				$_SESSION['check']= $check;	
-				render_project();
+				render_project($connect);
 			}
 			else{
 				echo "Wrong password or login";
@@ -211,15 +215,15 @@ header("Content-Type: text/html; charset=utf-8");
 
 		// добавление формы
 
-		function render_project() {
+		function render_project($conn) {
 					$user = $_SESSION['user_id'];
 					
-					$query = mysql_query("SELECT id_project, name_project, id_state, priority FROM  `project` WHERE id_user =$user ORDER BY priority");
+					$query = pg_query($conn,"SELECT id_project, name_project, id_state, priority FROM  public.project WHERE id_user =$user ORDER BY priority");
 					if (!$query) {
 						exit;
 					}
 					echo '<div class="row" id="output">	';			
-					while($project_data = mysql_fetch_row($query)){
+					while($project_data = pg_fetch_row($query)){
 						$param2 = (strlen($project_data[1])==0 ? "'Введите имя проекта'" : $project_data[1]);
 						echo '	<div id="'.$project_data[0].'">	
 							<!-- шапка окна для заполнения-->
@@ -253,7 +257,7 @@ header("Content-Type: text/html; charset=utf-8");
 											</div>							
 										</div>										
 									</div>';
-									render_tasks($project_data[0]);
+									render_tasks($conn,$project_data[0]);
 								echo '</div>';								
 					}		
 					
@@ -262,13 +266,13 @@ header("Content-Type: text/html; charset=utf-8");
 				
 				
 			 // работа с тасками
-				function render_tasks($project_id) {
+				function render_tasks($conn,$project_id) {
 					$user = $_SESSION['user_id'];
-					$query = mysql_query("SELECT id_task, name_task, id_project, id_user, id_state, priority FROM task WHERE id_user = $user AND id_project = $project_id ORDER BY priority");
+					$query = pg_query($conn,"SELECT id_task, name_task, id_project, id_user, id_state, priority FROM public.task WHERE id_user = $user AND id_project = $project_id ORDER BY priority");
 					if(!$query) {
 						exit;
 					}
-					while($project_task = mysql_fetch_row($query)){
+					while($project_task = pg_fetch_row($query)){
 						$paramTask2 = (strlen($project_task[1])==0 ? "'Введите наименование задания'" : $project_task[1]);
 						$checked = ($project_task[5]==0) ? 'checked="true"' : "";
 						echo'<!-- Часть для добавления задач -->
@@ -307,16 +311,14 @@ header("Content-Type: text/html; charset=utf-8");
 				}				
 	
 					if($check == true){
-						echo '
-							
-							<div class="row botton">
+						echo '<div class="row botton">
 								<div class="col-lg-2 col-lg-offset-4 col-md-2 col-md-offset-4 col-sm-3 col-sm-offset-4 col-xs-4 col-xs-offset-3">
 									<button type="button" name="add_project" onclick="create_project()" id="create_project" class="btn btn-primary">
 										<span class="glyphicon glyphicon glyphicon-plus"> Add TODO List</span>
 									</button>
-								</div>    
-							</div> ';
-						}							
+								</div>  
+							</div>';
+							}							
 							
 					include ($_SERVER["DOCUMENT_ROOT"]."/footer_index.html"); 		
 ?>	
