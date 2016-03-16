@@ -4,7 +4,7 @@
 	function create_project(){
          	    $.ajax({
                     type: "POST",
-                    url: "https://task/",
+                    url: "https://myoapp.herokuapp.com/",
                     data: "add_project=1",
                     cache: false,
                     success: function (answer) {
@@ -27,7 +27,7 @@
 		
          	    $.ajax({
                     type: "POST",
-                    url: "https://task/",
+                    url: "https://myoapp.herokuapp.com/",
                     data: "enter=1&e_log="+a+"&e_password="+b,
                     cache: false,
                     success: function (answer) {                     
@@ -76,7 +76,7 @@
 		}		
 		$.ajax({
 					type: "POST",
-					url: "https://task/",
+					url: "https://myoapp.herokuapp.com/",
 					data: params,
 					cache: false,
 					success: function (answer) {
@@ -108,7 +108,7 @@
 					var targetInput = document.getElementById("inputTaskName"+tid+"_"+project);			
 						$.ajax({							
 							type: "POST",
-							url: "https://task/",
+							url: "https://myoapp.herokuapp.com/",
 							data: "id="+tid+"&type="+type+"&tcontrols=1"+"&newTaskName='"+targetInput.value+"'&project="+project,
 							cache: false,
 							success: function (answer) {
@@ -125,7 +125,7 @@
 				case 2: 
 						$.ajax({
 							type: "POST",
-							url: "https://task/",
+							url: "https://myoapp.herokuapp.com/",
 							data: "id="+tid+"&type="+type+"&tcontrols=2&project="+project,
 							cache: false,
 							success: function (answer) {
@@ -142,7 +142,7 @@
 				case 3:
 					$.ajax({
 							type: "POST",
-							url: "https://task/",
+							url: "https://myoapp.herokuapp.com/",
 							data: "id="+tid+"&type="+type+"&tcontrols=3&project="+project,
 							cache: false,
 							success: function (answer) {
@@ -159,7 +159,7 @@
 				case 4:
 					$.ajax({
 							type: "POST",
-							url: "https://task/",
+							url: "https://myoapp.herokuapp.com/",
 							data: "id="+tid+"&type="+type+"&tcontrols=4&project="+project,
 							cache: false,
 							success: function (answer) {
@@ -175,7 +175,7 @@
 				case 5:
 					$.ajax({
 							type: "POST",
-							url: "https://task/",
+							url: "https://myoapp.herokuapp.com/",
 							data: "id="+tid+"&type="+type+"&tcontrols=5&project="+project,
 							cache: false,
 							success: function (answer) {
