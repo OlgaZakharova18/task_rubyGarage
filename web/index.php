@@ -9,7 +9,9 @@ header("Content-Type: text/html; charset=utf-8");
 		//подключение к бд
 		$dbopts = parse_url(getenv('DATABASE_URL'));
 		//$conn_string = "host=localhost port=5432 dbname=db_task user=postgres password=rhbcnfk121822";
-		$connect = pg_connect($dbopts) or die("Could not connect");
+		
+		$conn_string ='pgsql:dbname='.ltrim($dbopts["path"],'/').' host='.$dbopts["host"] . ' port=' . $dbopts["port"].' user='.$dbopts["user"].' password='.$dbopts["pass"];
+		$connect = pg_connect($conn_string) or die("Could not connect");
 		//pg_select('db_task', $connect);
 
 		
