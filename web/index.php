@@ -5,7 +5,7 @@ session_start(); // добавление сессии
 
 header("Content-Type: text/html; charset=utf-8");
 
-		//print_r($_POST);
+		print_r($_POST);
 		//подключение к бд
 		$dbopts = parse_url(getenv('DATABASE_URL'));
 		//$conn_string = "host=localhost port=5432 dbname=db_task user=postgres password=rhbcnfk121822";
