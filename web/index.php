@@ -11,7 +11,7 @@ header("Content-Type: text/html; charset=utf-8");
 		//$conn_string = "host=localhost port=5432 dbname=db_task user=postgres password=rhbcnfk121822";
 		
 		$conn_string ='pgsql:dbname='.ltrim($dbopts["path"],'/').' host='.$dbopts["host"] . ' port=' . $dbopts["port"].' user='.$dbopts["user"].' password='.$dbopts["pass"];
-		$connect = pg_connect($conn_string) or die("Could not connect");
+		$connect = pg_connect($conn_string) or die("Could not connect".$conn_string);
 		//pg_select('db_task', $connect);
 
 		
