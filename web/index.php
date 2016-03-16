@@ -5,13 +5,13 @@ session_start(); // добавление сессии
 
 header("Content-Type: text/html; charset=utf-8");
 
-		print_r($_POST);
+		//print_r($_POST);
 		//подключение к бд
 		$dbopts = parse_url(getenv('DATABASE_URL'));
 		//$conn_string = "host=localhost port=5432 dbname=db_task user=postgres password=rhbcnfk121822";
 		
 		$conn_string ='dbname='.ltrim($dbopts["path"],'/').' host='.$dbopts["host"] . ' port=' . $dbopts["port"].' user='.$dbopts["user"].' password='.$dbopts["pass"];
-		$connect = pg_connect($conn_string) or die("Could not connect".$conn_string);
+		$connect = pg_connect($conn_string) or die("Could not connect");
 		//pg_select('db_task', $connect);
 
 		
@@ -154,16 +154,16 @@ header("Content-Type: text/html; charset=utf-8");
 						exit;
 					}
 					$user = $_SESSION['user_id'];
-					$query = pg_query($connect,"SELECT COUNT( * ) +1 AS  \"count\" FROM public.project WHERE id_user = $user") or die(pg_last_error($connect));
+					$query = pg_query($connect,"SELECT COUNT( * ) +1 AS  \"count\" FROM public.project WHERE id_user = $user") or die("Error");
 					if (!$query) {
 						exit;
 					}
 					$user_data = pg_fetch_array($query);	
 					if($user_data[0]){						
 						$count = $user_data['count'];
-						$query = pg_query($connect,"INSERT INTO public.project (name_project, id_user , id_state, priority) VALUES('', $user ,0, $count)") or die(pg_last_error($connect));
+						$query = pg_query($connect,"INSERT INTO public.project (name_project, id_user , id_state, priority) VALUES('', $user ,0, $count)") or die("Error");
 						if (!$query) {						
-							echo pg_last_error($connect);						
+							//echo pg_last_error($connect);						
 							exit;					
 						}
 						else{
