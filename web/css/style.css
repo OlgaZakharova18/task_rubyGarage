@@ -131,9 +131,9 @@
 
 	
 	#output{
-	overflow-x: hidden;
-	overflow-y: auto;
-	padding: 15px;
+	overflow-x:hidden;
+	margin: 0;
+	padding:0;
 	height: 500px; 
 	width: 100%;
 	}
